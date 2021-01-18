@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WiseThing.Data.Respository;
 
-namespace WiseThing.Portal.Business.Handler
+namespace WiseThing.Portal.Business
 {
     public class UserHandler : IUserHandler
     {

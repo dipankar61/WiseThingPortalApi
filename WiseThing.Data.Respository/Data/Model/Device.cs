@@ -19,8 +19,7 @@ namespace WiseThing.Data.Respository
         public DateTime InputDate { get; set; }
         public string InputBy { get; set; }
 
-        public DateTime UpdateDate { get; set; }
-        public string UpdateBy { get; set; }
+      
 
         internal virtual ICollection<Userdevice> Userdevices { get; set; }
     }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WiseThing.Data.Respository;
+using WiseThing.Portal.Business;
 using AutoMapper;
 
 namespace WiseThingPortalApi
@@ -36,7 +37,11 @@ namespace WiseThingPortalApi
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-
+            services.AddTransient<IUserHandler, UserHandler>();
+            services.AddTransient<IDeviceHandler, DeviceHandler>();
+            services.AddTransient<IDeviceRepository, DeviceRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserDeviceRepository, UserDeviceRepository>();
             services.AddControllers();
 
         }

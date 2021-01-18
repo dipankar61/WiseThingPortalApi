@@ -17,16 +17,15 @@ namespace WiseThing.Data.Respository
         public async Task<DeviceDTO> AddDevice(DeviceDTO deviceceDto)
         {
             var device = _mapper.Map<Device>(deviceceDto);
+            device.InputDate = DateTime.Now;
             _context.Devices.Add(device);
             await _context.SaveChangesAsync();
             return deviceceDto;
         }
-        public async Task EditDevice(UserDeviceDTO dto, string userName,string deviceName)
+        public async Task EditDevice(UserDeviceDTO dto, string deviceName)
         {
             var dev = await _context.Devices.SingleOrDefaultAsync(x => x.DeviceId == dto.DeviceId);
             dev.DeviceName = deviceName;
-            dev.UpdateBy = userName;
-            dev.UpdateDate = DateTime.Now;
             var userDevice = _mapper.Map<Userdevice>(dto);
             userDevice.InputDate = DateTime.Now;
             _context.Userdevices.Add(userDevice);
