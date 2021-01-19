@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,44 +21,113 @@ namespace WiseThingPortal.Api.Controllers
             _userHandler = userHandler;
         }
         
-        [HttpGet("{userName}/{passWord}")]
-        public async Task<UserDTO> GetLoginUserDetails(string userName, string passWord)
-        {
-            return await _userHandler.GetUserByLogin(userName, passWord);
-        }
-
-       
-        [HttpGet("{userid}")]
-        public async Task<UserDTO> GetUserById(int userid)
-        {
-            
-           return await _userHandler.GetUserById(userid);
-           
-        }
-
-        [HttpGet("{userName}")]
-        public async Task<bool> CheckUserNameAvialable(string userName)
-        {
-
-            return await _userHandler.IsUserNameAlreadyExsist(userName);
-
-        }
-
         
-        [HttpPost]
-        public async Task<StatusCodeResult> AddEditUser([FromBody] UserDTO user)
+        [HttpGet]
+        [Route("GetLoginUserDetails/{userName}/{passWord}")]
+        public async Task<ActionResult<UserDTO>> GetLoginUserDetails(string userName, string passWord)
         {
-            if (user != null)
-            {
-                await _userHandler.AddEditUser(user);
-                return Ok();
+            try
+            { 
+                if (!string.IsNullOrEmpty(userName) || !string.IsNullOrEmpty(userName))
+                {
+                    var response = await _userHandler.GetUserByLogin(userName, passWord);
+                    if (response != null)
+                        return Ok(response);
+                    else
+                        return NoContent();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+                   
             }
-            else
+            catch(Exception ex)
             {
-                return NotFound();
-                
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
             }
-                    
+        }
+
+
+        [HttpGet]
+        [Route("GetUserById/{userid}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(int userid)
+        {
+            try
+            {
+                if (userid != 0)
+                {
+                    var response = await _userHandler.GetUserById(userid); ;
+                    if (response != null)
+                        return Ok(response);
+                    else
+                        return NoContent();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+
+
+        }
+
+        [HttpGet]
+        [Route("UserNameExist/{userName}")]
+        public async Task<ActionResult<bool>> CheckUserNameAvialable(string userName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(userName))
+                {
+                    var response = await _userHandler.IsUserNameAlreadyExsist(userName); ;
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
+            
+
+        }
+
+
+        [HttpPost]
+        [Route("AddEditUser")]
+        public async Task<IActionResult> AddEditUser([FromBody] UserDTO user)
+        {
+            try
+            {
+
+                if (user != null)
+                {
+                    await _userHandler.AddEditUser(user);
+                    return Ok();
+                }
+                else
+                {
+
+                    return BadRequest();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
         }
 
         

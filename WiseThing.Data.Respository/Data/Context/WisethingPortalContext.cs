@@ -40,7 +40,6 @@ namespace WiseThing.Data.Respository
                     .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.DeviceName)
-                    .IsRequired()
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");

@@ -37,10 +37,10 @@ namespace WiseThing.Data.Respository
         public async Task<IEnumerable<DeviceDTO>> GetDevicesByuserId(int userId)
         {
             List<DeviceDTO> deviceList = new List<DeviceDTO>();
-            var devices = await _context.Devices.Include(d => d.Userdevices.Where(x => x.UserId == userId)).ToListAsync();
+            var devices = await _context.Userdevices.Where(x => x.UserId == userId).Include(y => y.Device).ToListAsync();
             devices.ForEach(x =>
             {
-                var dto= _mapper.Map<DeviceDTO>(x);
+                var dto= _mapper.Map<DeviceDTO>(x.Device);
                 deviceList.Add(dto);
             });
             return deviceList;
@@ -59,7 +59,7 @@ namespace WiseThing.Data.Respository
                                     on d.DeviceId equals ud.DeviceId
                                     where d.DeviceId == deviceId
                                    select ud.UserId).ToListAsync();
-            return userIdlist!=null?userIdlist.First():0;
+            return userIdlist!=null && userIdlist.Count>0 ? userIdlist.First():0;
         }
     }
 }

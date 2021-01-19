@@ -12,7 +12,7 @@ namespace WiseThing.Data.Respository
             CreateMap<User, UserDTO>();
             CreateMap<UserDTO, User>();
             CreateMap<Device, DeviceDTO>();
-            CreateMap<DeviceDTO, User>();
+            CreateMap<DeviceDTO, Device>();
             CreateMap<Userdevice, UserDeviceDTO>();
             CreateMap<UserDeviceDTO, Userdevice>();
         }

@@ -35,20 +35,19 @@ namespace WiseThing.Data.Respository
             user.PhoneNo = userDto.PhoneNo;
             user.UserType = user.UserType;
             user.UpdateDate = DateTime.Now;
-            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
         }
 
         public async Task<UserDTO> GetUserById(int userId)
         {
-            var user = await _context.Users.SingleAsync(x=>x.UserId== userId);
+            var user = await _context.Users.SingleOrDefaultAsync(x=>x.UserId== userId);
             return _mapper.Map<UserDTO>(user);
         }
 
         public async Task<UserDTO> GetUserByLoginDetails(string userName, string passWord)
         {
-            var user = await _context.Users.SingleAsync(x => x.UserName == userName && x.Password== passWord);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == userName && x.Password== passWord);
             return _mapper.Map<UserDTO>(user);
         }
         public async Task<bool> IsUserExists(string userName)

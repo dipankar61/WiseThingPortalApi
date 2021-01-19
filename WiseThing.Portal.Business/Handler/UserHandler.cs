@@ -27,12 +27,18 @@ namespace WiseThing.Portal.Business
 
         public async Task<UserDTO> GetUserById(int userId)
         {
-            return await _userRepo.GetUserById(userId);
+            var user = await _userRepo.GetUserById(userId);
+            if(user !=null)
+              user.Password = string.Empty;
+            return user;
         }
 
         public async Task<UserDTO> GetUserByLogin(string userName, string passWord)
         {
-            return await _userRepo.GetUserByLoginDetails(userName, passWord);
+            var user= await _userRepo.GetUserByLoginDetails(userName, passWord);
+            if (user != null)
+                user.Password = string.Empty;
+            return user;
         }
 
         public async Task<bool> IsUserNameAlreadyExsist(string userName)
